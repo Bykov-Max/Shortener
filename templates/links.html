@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{title}}</title>
+</head>
+<body>
+
+<div>
+    {% for m in menu %}
+        <a href="/{{m.url}}"> {{m.name}} </a>
+    {% endfor %}
+    <a href="{{url_for('logout')}}"> Выйти из профиля </a>
+</div> <br>
+
+    
+{% for msg in get_flashed_messages() -%}
+    {% for res in msg -%}
+        <ul> 
+            <li> {{res}} </li> 
+        </ul>
+    {% endfor -%}
+{% endfor -%}
+
+</body>
+</html>
