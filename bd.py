@@ -87,12 +87,27 @@ def addLink(name, link, short_link, access, user_id):
         try:
                 con = sqlite3.connect("users.db")
                 cursor = con.cursor()
-                cursor.execute(""" INSERT INTO link(name, link, short_link, access, user_id) VALUES (?, ?, ?, ?, ?);""", (name, link, short_link, access, user_id))
+                cursor.execute(""" INSERT INTO link(name, link, short_link, access, user_id) VALUES (?, ?, ?, ?, ?)""", (name, link, short_link, access, user_id))
                 con.commit()
                 print("Ссылка сокращена")
                 return "Ссылка сокращена"       
         except:
                 print ('ошибка сокращения')
+        finally:
+                con.close()
+
+
+def getLink(user_id, link_id):
+        try:
+                con = sqlite3.connect("users.db")
+                cursor = con.cursor()
+                info = cursor.execute(""" SELECT * FROM link where user_id = ? and ID = ?""", (user_id, link_id,)).fetchone()
+
+                return info
+
+        except sqlite3.Error as err:
+                print(err)
+                return "false"
         finally:
                 con.close()
 
@@ -112,58 +127,46 @@ def getLinks(user_id):
                 con.close()
 
 
+def delLinks(user_id, link_id):
+        try:
+                con = sqlite3.connect("users.db")
+                cursor = con.cursor()
 
-# def checkLink(user_id, link_id):
-#         try:
-#                 con = sqlite3.connect("users.db")
-#                 cursor = con.cursor()
+                cursor.execute(""" DELETE FROM link
+                                where ID = ? and user_id = ?""", (link_id, user_id))
+                con.commit()
 
-#                 subscrs = cursor.execute(""" SELECT * FROM subscribes 
-#                                         where user_id = ? and
-#                                          category_id=?""", (user_id, link_id)).fetchone()
+                return "Ссылка удалена"
 
-#                 if subscrs == None:
-#                         return 0
-#                 else:
-#                         return 1
-
-                      
-
-#         except sqlite3.Error as err:
-#                 print(err)
-#                 return "false"
-#         finally:
-#                 con.close()
+        except sqlite3.Error as err:
+                print(err)
+                return "false"
+        finally:
+                con.close()
 
 
+def updateLinks(name, access, user_id, link_id):
+        try:
+                con = sqlite3.connect("users.db")
+                cursor = con.cursor()
 
-# def delLinks(user_id, link_id):
-#         try:
-#                 con = sqlite3.connect("users.db")
-#                 cursor = con.cursor()
+                cursor.execute(""" UPDATE link SET name = ? 
+                                where ID = ? and user_id = ?""", (name, link_id, user_id))
+                con.commit()
 
-#                 catName = cursor.execute("""SELECT name FROM category where ID = ? """, (link_id,)).fetchall()
+                cursor.execute(""" UPDATE link SET access = ? 
+                                                where ID = ? and user_id = ?""", (access, link_id, user_id))
+                con.commit()
 
-#                 subscrs = cursor.execute(""" SELECT link_id FROM links 
-#                                         where user_id = ? and
-#                                         link_id=?""", (user_id,link_id,)).fetchone()
+                return "Ссылка обновлена"
 
-#                 if not subscrs:
-#                         print(f"Данной ссылки не существует {catName[0][0]}")
-#                         return catName[0][0]
-#                 else:
-#                         delSub = cursor.execute(""" DELETE FROM links 
-#                                         where link_id = ?""", (link_id,))
-#                         con.commit()
-                        
-#                         print(f"Вы удалили ссылку {catName[0][0]}")
-#                         return catName[0][0]
-                
-#         except sqlite3.Error as err:
-#                 print(err)
-#                 return "false"
-#         finally:
-#                 con.close()
+        except sqlite3.Error as err:
+                print(err)
+                return "false"
+        finally:
+                con.close()
+
+
 
 try:
         con = sqlite3.connect("users.db")
