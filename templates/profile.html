@@ -17,12 +17,11 @@
 </div> <br>
 
 <form action="/short" method="post">
-    <input type="text" name="url">
-    <input type="text" name="name" placeholder="Псевдоним">
+    <input type="text" name="url" required>
+    <input type="text" name="name" placeholder="Псевдоним" required>
     <select name="access">
         <option value = "Публичная"> Публичная </option>
         <option value = "Приватная"> Приватная </option>
-        <option value = "Общего доступа"> Общего доступа </option>
     </select>
 
     <button name='short'> Сократить </button> <br><br>

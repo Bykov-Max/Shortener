@@ -19,7 +19,8 @@
 {% for msg in get_flashed_messages() -%}
     {% for res in msg -%}
         <ul> 
-            <li> {{res}} </li> 
+            <li> Сокращённая ссылка: {{res.short}} Право доступа: {{res.access}} Краткое название: {{res.name}} <a href="/update/{{res.id}}">Обновить</a>
+                <a href="/delete/{{res.id}}" onclick="return confirm('Вы действительно хотите удалить ссылку?');">Удалить</a></li>
         </ul>
     {% endfor -%}
 {% endfor -%}
